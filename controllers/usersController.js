@@ -95,10 +95,11 @@ const refreshUser = async (req, res) => {
         if(!existingUser) {return res.status(401).json({ message: 'Email or password is wrong' });}
 
         const payload = { id: existingUser._id };
-        const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, { expiresIn: "23h" });
-        await User.findByIdAndUpdate(existingUser._id, { refreshToken });
+        // const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, { expiresIn: "23h" });
+        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10m" });
+        await User.findByIdAndUpdate(existingUser._id, { token });
         res.status(200).json({
-            refreshToken,
+            token,
             user: {
                 email: existingUser.email,
             }
