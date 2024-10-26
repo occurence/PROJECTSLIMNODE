@@ -4,7 +4,7 @@ import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const { SECRET_KEY, PORT } = process.env;
+const { SECRET_KEY, REFRESH_SECRET_KEY, PORT } = process.env;
 
 const signupUser = async (req, res) => {
     try {
@@ -46,10 +46,12 @@ const loginUser = async (req, res) => {
         if(!isPasswordValid) {return res.status(401).json({ message: 'Password is wrong' });}
 
         const payload = { id: existingUser._id };
-        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
-        await User.findByIdAndUpdate(existingUser._id, { token });
+        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10m" });
+        const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, { expiresIn: "23h" });
+        await User.findByIdAndUpdate(existingUser._id, { token, refreshToken });
         res.status(200).json({
             token,
+            refreshToken,
             user: {
                 email: existingUser.email,
             }
@@ -86,4 +88,21 @@ const updateUser = async (req, res) => {
     } catch (error) {res.status(500).json({ message: error.message });}
 }
 
-export { signupUser, loginUser, logoutUser, getCurrentUser, updateUser };
+const refreshUser = async (req, res) => {
+    try {
+        const { email } = req.user;
+        const existingUser = await User.findOne({ email });
+        if(!existingUser) {return res.status(401).json({ message: 'Email or password is wrong' });}
+
+        const payload = { id: existingUser._id };
+        const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, { expiresIn: "23h" });
+        await User.findByIdAndUpdate(existingUser._id, { refreshToken });
+        res.status(200).json({
+            refreshToken,
+            user: {
+                email: existingUser.email,
+            }
+        });
+    } catch (error) {res.status(500).json({ message: error.message });}
+}
+export { signupUser, loginUser, logoutUser, getCurrentUser, updateUser, refreshUser };

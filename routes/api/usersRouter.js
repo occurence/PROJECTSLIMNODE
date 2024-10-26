@@ -1,6 +1,6 @@
 import express from 'express';
-import { signupUser, loginUser, logoutUser, getCurrentUser, updateUser } from '../../controllers/usersController.js';
-import { authenticateToken } from '../../middlewares/auth.js';
+import { signupUser, loginUser, logoutUser, getCurrentUser, updateUser, refreshUser } from '../../controllers/usersController.js';
+import { authenticateToken, authenticateRefreshToken } from '../../middlewares/auth.js';
 
 const router = express.Router();
 
@@ -9,5 +9,6 @@ router.post('/login', loginUser);
 router.get('/logout', authenticateToken, logoutUser);
 router.get('/current', authenticateToken, getCurrentUser);
 router.patch('/', authenticateToken, updateUser);
+router.post('/refresh', authenticateToken, refreshUser);
 
 export default router;
