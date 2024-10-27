@@ -14,7 +14,7 @@ const signupUser = async (req, res) => {
         if(error) {return res.status(400).json({ message: 'Missing required email or password field' });}
 
         const existingUser = await User.findOne({ email });
-        if(existingUser) {return res.status(409).json({ message: 'Email in use' });}
+        if(existingUser) {return res.status(409).json({ message: 'Email already registered' });}
     
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -28,7 +28,8 @@ const signupUser = async (req, res) => {
                 name: newUser.name,
                 email: newUser.email,
                 password: newUser.password,
-            }
+            },
+            message: 'Registrations successful'
         });
     } catch (error) {res.status(500).json({ message: error.message });}
 }
@@ -54,7 +55,8 @@ const loginUser = async (req, res) => {
             refreshToken,
             user: {
                 email: existingUser.email,
-            }
+            },
+            message: 'Login successful'
         });
     } catch (error) {res.status(500).json({ message: error.message });}
 }
@@ -63,14 +65,15 @@ const logoutUser = async (req, res) => {
     try {
         const { _id } = req.user;
         await User.findByIdAndUpdate(_id, { token: "" });
-        res.status(204).json({ message: 'User successfully logged out' });
+        res.status(204).json({
+            message: 'Logout successful' });
     } catch (error) {res.status(500).json({ message: error.message });}
 }
 
 const getCurrentUser = async (req, res) => {
     try {
         const { name, email} = req.user;
-        res.status(200).json({ name, email });
+        res.status(200).json({ name, email, message: 'Get current user successful'});
     } catch (error) {res.status(500).json({ message: error.message });}
 }
 
@@ -84,6 +87,7 @@ const updateUser = async (req, res) => {
         res.status(200).json({
             name: updatedUser.name,
             email: updatedUser.email,
+            message: 'Update successful'
         });
     } catch (error) {res.status(500).json({ message: error.message });}
 }
@@ -102,6 +106,7 @@ const refreshUser = async (req, res) => {
             token,
             user: {
                 email: existingUser.email,
+                message: 'Refresh successful'
             }
         });
     } catch (error) {res.status(500).json({ message: error.message });}
