@@ -17,7 +17,7 @@ const authenticateToken = async (req, res, next) => {
         const { id } = jwt.verify(accessToken, SECRET_KEY);
         console.log('Token verified, user ID: ', id);
         const user = await User.findById(id);
-        if(!user || user.accessToken !== accessToken || !user.accessToken) {console.log('User not found or token mismatch');
+        if(!user || user.accessToken !== accessToken || !user.accessToken) {console.log('authenticateToken: User not found or token mismatch');
             return res.status(401).json({ message: 'Not authorized' });}
 
         req.user = user;
@@ -25,7 +25,8 @@ const authenticateToken = async (req, res, next) => {
         next();
     } catch (error) {console.log('Error verifying token: ', error.message);
         if(error.message === 'jwt expired'){
-            await refreshUser();
+            console.log('Token expired, attempting to refresh...');
+            return refreshUser(req, res);
         }
         // if(error.message === 'jwt expired'){
         //     const { authorization="" } = req.headers;
@@ -63,8 +64,8 @@ const authenticateRefreshToken = async (req, res, next) => {
         console.log('Verifying refresh token...');
         const { id } = jwt.verify(refreshToken, REFRESH_SECRET_KEY);
         console.log('Refresh token verified, user ID: ', id);
-        const user = await User.findById(id);
-        if(!user || user.refreshToken !== refreshToken || !user.refreshToken) {console.log('User not found or refresh token mismatch');
+        const user = await User.findById(id.id);
+        if(!user || user.refreshToken !== refreshToken || !user.refreshToken) {console.log('authenticateRefreshToken:User not found or refresh token mismatch');
             return res.status(401).json({ message: 'Not authorized' });}
 
         req.user = user;
