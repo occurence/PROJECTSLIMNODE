@@ -9,6 +9,6 @@ router.post('/login', loginUser);
 router.get('/logout', authenticateToken, logoutUser);
 router.get('/current', authenticateToken, getCurrentUser);
 router.patch('/update', authenticateToken, updateUser);
-router.post('/refresh', authenticateRefreshToken, refreshUser);
+router.post('/refresh', authenticateRefreshToken, authenticateToken, refreshUser);
 
 export default router;
