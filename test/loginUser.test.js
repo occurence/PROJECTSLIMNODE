@@ -68,7 +68,7 @@ describe('Test @POST /api/users/login', () => {
         console.log("Response body USER:", res.body.user);
 
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty('token', 'mockJwtToken');
+        expect(res.body).toHaveProperty('accessToken', 'mockJwtToken');
         const { user } = res.body;
         console.log(`User where: ${user}`);
     });
