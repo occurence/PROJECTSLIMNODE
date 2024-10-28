@@ -47,13 +47,14 @@ const loginUser = async (req, res) => {
         if(!isPasswordValid) {return res.status(401).json({ message: 'Password is wrong' });}
 
         const payload = { id: existingUser._id };
-        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10m" });
+        const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "10m" });
         const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, { expiresIn: "23h" });
-        await User.findByIdAndUpdate(existingUser._id, { token, refreshToken });
+        await User.findByIdAndUpdate(existingUser._id, { accessToken, refreshToken });
         res.status(200).json({
-            token,
+            accessToken,
             refreshToken,
             user: {
+                name: existingUser.name,
                 email: existingUser.email,
             },
             message: 'Login successful'
@@ -64,7 +65,7 @@ const loginUser = async (req, res) => {
 const logoutUser = async (req, res) => {
     try {
         const { _id } = req.user;
-        await User.findByIdAndUpdate(_id, { token: "" });
+        await User.findByIdAndUpdate(_id, { accessToken: "" });
         res.status(204).json({
             message: 'Logout successful' });
     } catch (error) {res.status(500).json({ message: error.message });}
@@ -100,10 +101,10 @@ const refreshUser = async (req, res) => {
 
         const payload = { id: existingUser._id };
         // const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, { expiresIn: "23h" });
-        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "10m" });
-        await User.findByIdAndUpdate(existingUser._id, { token });
+        const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "10m" });
+        await User.findByIdAndUpdate(existingUser._id, { accessToken });
         res.status(200).json({
-            token,
+            accessToken,
             user: {
                 email: existingUser.email,
                 message: 'Refresh successful'
