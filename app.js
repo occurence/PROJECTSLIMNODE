@@ -3,6 +3,7 @@ import logger from 'morgan';
 import cors from 'cors';
 
 import usersRouter from './routes/api/usersRouter.js';
+import productsRouter from './routes/api/productsRouter.js';
 // import { swaggerSpecs, swaggerUi } from './swaggerConfig.js';
 
 const app = express();
@@ -32,6 +33,7 @@ app.use(express.static("public"));
 
 
 app.use('/api/users', usersRouter);
+app.use('/api/products', productsRouter);
 
 app.use((_req, res) => {
   res.status(404).json({ message: 'Not found' });

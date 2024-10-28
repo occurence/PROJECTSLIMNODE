@@ -13,15 +13,12 @@ const productSchema = new Schema({
         type: String,
         required: [true, 'Set title for product'],
         index: 1,
-        // unique: true,
     },
     calories: {
         type: Number,
         required: [true, 'Set calories for product'],
     },
     groupBloodNotAllowed: {
-        // type: Array,
-        // enum: [{blood: Boolean}],
         type: Map,
         of: Boolean,
         default: {0: null},
