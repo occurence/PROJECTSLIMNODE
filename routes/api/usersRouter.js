@@ -8,7 +8,7 @@ router.post('/signup', signupUser);
 router.post('/login', loginUser);
 router.get('/logout', authenticateToken, logoutUser);
 router.get('/current', authenticateToken, getCurrentUser);
-router.patch('/', authenticateToken, updateUser);
+router.patch('/update', authenticateToken, updateUser);
 router.post('/refresh', authenticateRefreshToken, refreshUser);
 
 export default router;
