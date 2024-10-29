@@ -9,9 +9,5 @@ router.get('/:todayId', authenticateToken, getTodayById);
 router.post('/', authenticateToken, dailyIntake);
 router.patch('/:todayId', authenticateToken, consumeProduct);
 router.delete('/:todayId/:productId', authenticateToken, deleteConsumeProduct);
-// router.post('/today', authenticateToken, addToday);
-// router.delete('/:todayId', authenticateToken, deleteToday);
-// router.put('/:todayId', authenticateToken, updateToday);
-// router.patch('/:todayId/product', authenticateToken, updateGramsProduct);
 
 export default router;

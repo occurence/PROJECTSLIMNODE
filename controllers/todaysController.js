@@ -82,10 +82,6 @@ const deleteConsumeProduct = async (req, res, next) => {
     res.status(200).json({
       today: {
         [productId]: grams,
-        // product: 
-        //   productId,
-        //   grams,
-          // result.product.productId,
       },
     });
     
