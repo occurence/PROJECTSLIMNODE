@@ -4,6 +4,7 @@ const todaySchema = new Schema({
     date: {
         type: Date,
         required: [true, 'Set date for entry'],
+        unique: true,
         index: 1,
     },
     height: {
@@ -23,7 +24,7 @@ const todaySchema = new Schema({
         required: [true, 'Set desired weight'],
     },
     blood: {
-        type: String,
+        type: Number,
         required: [true, 'Set blood type'],
     },
     dailyRate: {
@@ -45,6 +46,7 @@ const todaySchema = new Schema({
     product: {
         type: Map,
         of: Number,
+        default: null,
     },
 });
 
