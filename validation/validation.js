@@ -1,7 +1,13 @@
 import Joi from "joi";
 
 const signupValidation = Joi.object({
-    name: Joi.string().required(),
+    name: Joi.string()
+        .pattern(/^[A-Za-z]+$/)
+        .required()
+        .messages({
+            'string.pattern.base': 'Name must only contain alphabet letters',
+            'any.required': 'Missing required name field',
+        }),
     email: Joi.string()
         .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
         .required()
@@ -36,4 +42,96 @@ const updateValidation = Joi.object({
     email: Joi.string().required(),
 });
 
-export { signupValidation, loginValidation, updateValidation };
+const intakeValidation = Joi.object({
+    date: Joi.date()
+    .required()
+    .messages({
+        "any.required": "Missing required date field",
+        "date.date": "Invalid date format",
+    }),
+    height: Joi.string()
+    .length(3)
+    .pattern(/^\d+$/)
+    .required()
+    .messages({
+        'string.pattern.base': 'Height must only contain numerical',
+        'any.required': 'Missing required height field',
+    }),
+    age: Joi.string()
+    .length(3)
+    .pattern(/^\d+$/)
+    .required()
+    .messages({
+        'string.pattern.base': 'Age must only contain numerical',
+        'any.required': 'Missing required age field',
+    }),
+    weight: Joi.string()
+    .length(3)
+    .pattern(/^\d+$/)
+    .required()
+    .messages({
+        'string.pattern.base': 'Weight must only contain numerical',
+        'any.required': 'Missing required weight field',
+    }),
+    weightDesired: Joi.string()
+    .length(3)
+    .pattern(/^\d+$/)
+    .required()
+    .messages({
+        'string.pattern.base': 'Desired weight must only contain numerical',
+        'any.required': 'Missing required desired weight field',
+    }),
+    blood: Joi.string()
+    .required()
+    .messages({
+        "any.required": "Missing required blood group  field",
+        "blood.string": "Invalid blood format",
+    }),
+});
+
+const publicIntakeValidation = Joi.object({
+    height: Joi.string()
+    .max(3)
+    .pattern(/^\d+$/)
+    .required()
+    .messages({
+        'string.pattern.base': 'Height must only contain numerical',
+        "string.max": "height cannot be longer than {#limit} characters",
+        'any.required': 'Missing required height field',
+    }),
+    age: Joi.string()
+    .max(3)
+    .pattern(/^\d+$/)
+    .required()
+    .messages({
+        'string.pattern.base': 'Age must only contain numerical',
+        "string.max": "Age cannot be longer than {#limit} characters",
+        'any.required': 'Missing required age field',
+    }),
+    weight: Joi.string()
+    .max(3)
+    .pattern(/^\d+$/)
+    .required()
+    .messages({
+        'string.pattern.base': 'Weight must only contain numerical',
+        "string.max": "Weight cannot be longer than {#limit} characters",
+        'any.required': 'Missing required weight field',
+    }),
+    weightDesired: Joi.string()
+    .max(3)
+    .pattern(/^\d+$/)
+    .required()
+    .messages({
+        'string.pattern.base': 'Desired weight must only contain numerical',
+        "string.max": "Desired weight cannot be longer than {#limit} characters",
+        'any.required': 'Missing required desired weight field',
+    }),
+    blood: Joi.string()
+    .required()
+    .messages({
+        "any.required": "Missing required blood group  field",
+        "blood.string": "Invalid blood format",
+    }),
+});
+
+export { signupValidation, loginValidation, updateValidation, publicIntakeValidation };
