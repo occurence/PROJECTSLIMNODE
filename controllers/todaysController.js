@@ -1,5 +1,5 @@
 import { Today } from '../models/todaysModel.js';
-import { intakeValidation, publicIntakeValidation } from '../validation/validation.js'; 
+import { intakeValidation } from '../validation/validation.js'; 
 
 const getAllTodays = async (_req, res, next) => {
     try {

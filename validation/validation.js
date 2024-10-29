@@ -50,47 +50,6 @@ const intakeValidation = Joi.object({
         "date.date": "Invalid date format",
     }),
     height: Joi.string()
-    .length(3)
-    .pattern(/^\d+$/)
-    .required()
-    .messages({
-        'string.pattern.base': 'Height must only contain numerical',
-        'any.required': 'Missing required height field',
-    }),
-    age: Joi.string()
-    .length(3)
-    .pattern(/^\d+$/)
-    .required()
-    .messages({
-        'string.pattern.base': 'Age must only contain numerical',
-        'any.required': 'Missing required age field',
-    }),
-    weight: Joi.string()
-    .length(3)
-    .pattern(/^\d+$/)
-    .required()
-    .messages({
-        'string.pattern.base': 'Weight must only contain numerical',
-        'any.required': 'Missing required weight field',
-    }),
-    weightDesired: Joi.string()
-    .length(3)
-    .pattern(/^\d+$/)
-    .required()
-    .messages({
-        'string.pattern.base': 'Desired weight must only contain numerical',
-        'any.required': 'Missing required desired weight field',
-    }),
-    blood: Joi.string()
-    .required()
-    .messages({
-        "any.required": "Missing required blood group  field",
-        "blood.string": "Invalid blood format",
-    }),
-});
-
-const publicIntakeValidation = Joi.object({
-    height: Joi.string()
     .max(3)
     .pattern(/^\d+$/)
     .required()
@@ -129,9 +88,16 @@ const publicIntakeValidation = Joi.object({
     blood: Joi.string()
     .required()
     .messages({
-        "any.required": "Missing required blood group  field",
+        "any.required": "Missing required blood group field",
         "blood.string": "Invalid blood format",
+    }),
+    dailyRate: Joi.string()
+    .required()
+    .messages({
+        "any.required": "Missing required intake field",
+        "dailyRate.string": "Invalid intake format",
     }),
 });
 
-export { signupValidation, loginValidation, updateValidation, publicIntakeValidation };
+
+export { signupValidation, loginValidation, updateValidation, intakeValidation };
