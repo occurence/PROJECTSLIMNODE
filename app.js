@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import usersRouter from './routes/api/usersRouter.js';
 import productsRouter from './routes/api/productsRouter.js';
+import todaysRouter from './routes/api/todaysRouter.js';
 // import { swaggerSpecs, swaggerUi } from './swaggerConfig.js';
 
 const app = express();
@@ -34,6 +35,7 @@ app.use(express.static("public"));
 
 app.use('/api/users', usersRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/todays', todaysRouter);
 
 app.use((_req, res) => {
   res.status(404).json({ message: 'Not found' });
