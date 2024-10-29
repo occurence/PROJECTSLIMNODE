@@ -54,29 +54,41 @@ const dailyIntake = async (req, res, next) => {
 const consumeProduct = async (req, res, next) => {
   try {
     const { todayId } = req.params;
-    // const productData = req.body.product;
 
-    // if(!Array.isArray(productId)) {return res.status(404).json({ message: 'Date Not Found' });}
-    // if(typeof productData !== 'object' || productData === null){return res.status(400).json({ message: 'Product must be an object with Ids and grams' });}
-    // const result = await Today.findById(todayId);
-    const result = await Today.findByIdAndUpdate(todayId, req.body);
-    if(!result) {return res.status(404).json({ message: 'Date Not Found' });}
-    
-    // for (const [productId, grams] of Object.entries(productData)) {
-    //   if(typeof grams !== 'number' || grams < 0) {return res.status(400).json({ message: 'Grams must be a positive number' });}
-    // }
+    const result = await Today.findByIdAndUpdate(todayId, req.body, { new: true });
+    if(!result) {return res.status(404).json({ message: 'Date not Found' });}
 
-    res.status(200).json(result);
+    res.status(200).json({
+      today: {
+        product: 
+          result.product
+      },
+    });
   } catch (error) {res.status(500).json({ message: error.message });}
 }
 
 const deleteConsumeProduct = async (req, res, next) => {
   try {
-    const { todayId } = req.params;
-    const result = await Today.findById(todayId);
+    const { todayId, productId } = req.params;
 
+    const result = await Today.findById(todayId);
     if(!result) {return res.status(404).json({ message: 'Date Not Found' });}
-    res.status(200).json(result);
+
+    const grams = result.product.get(productId);
+    if(!result.product.has(productId)) {return res.status(404).json({ message: 'Product ID not Found' });}
+    result.product.delete(productId);
+    await result.save();
+
+    res.status(200).json({
+      today: {
+        [productId]: grams,
+        // product: 
+        //   productId,
+        //   grams,
+          // result.product.productId,
+      },
+    });
+    
   } catch (error) {res.status(500).json({ message: error.message });}
 }
 
