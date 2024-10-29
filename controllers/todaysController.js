@@ -1,4 +1,5 @@
 import { Today } from '../models/todaysModel.js';
+import { publicIntakeValidation } from '../validation/validation.js'; 
 
 const getAllTodays = async (_req, res, next) => {
     try {
@@ -17,4 +18,15 @@ const getTodayById = async (req, res, next) => {
     } catch (error) {next(error);}
   }
 
-export { getAllTodays, getTodayById };
+const getIntake = async (req, res, next) => {
+  try {
+    const { error } = publicIntakeValidation.validate(req.body);
+    if(error) {return res.status(400).json({ message: 'Missing required fields' });}
+
+    const { height, age, weight, weightDesired, blood } = req.body;
+    res.status(200).json({
+      height, age, weight, weightDesired, blood
+    });
+  } catch (error) {next(error);}
+}
+export { getAllTodays, getTodayById, getIntake };
