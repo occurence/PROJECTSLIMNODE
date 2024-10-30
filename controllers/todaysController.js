@@ -54,14 +54,19 @@ const dailyIntake = async (req, res, next) => {
 const consumeProduct = async (req, res, next) => {
   try {
     const { todayId } = req.params;
-
-    const result = await Today.findByIdAndUpdate(todayId, req.body, { new: true });
+    const result = await Today.findById(todayId);
     if(!result) {return res.status(404).json({ message: 'Date not Found' });}
+
+    for (const [productId, grams] of Object.entries(req.body.product)) {
+      result.product.set(productId, grams);
+    }
+
+    await result.save();
 
     res.status(200).json({
       today: {
-        product: 
-          result.product
+        product:
+          result.product,
       },
     });
   } catch (error) {res.status(500).json({ message: error.message });}
