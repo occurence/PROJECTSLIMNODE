@@ -47,7 +47,7 @@ const loginUser = async (req, res) => {
         if(!isPasswordValid) {return res.status(401).json({ message: 'Password is wrong' });}
 
         const payload = { id: existingUser._id };
-        const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "10m" });
+        const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "3h" });
         const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, { expiresIn: "23h" });
         await User.findByIdAndUpdate(existingUser._id, { accessToken, refreshToken });
         res.status(200).json({
