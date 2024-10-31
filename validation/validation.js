@@ -43,6 +43,12 @@ const updateValidation = Joi.object({
 });
 
 const intakeValidation = Joi.object({
+    user: Joi.string()
+    .required()
+    .messages({
+        "any.required": "Missing required user field",
+        "user.string": "Invalid user format",
+    }),
     date: Joi.date()
     .required()
     .messages({
