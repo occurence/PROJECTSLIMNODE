@@ -1,11 +1,15 @@
 import { Schema, model } from 'mongoose';
 
 const todaySchema = new Schema({
+    user: {
+        type: String,
+        required: [true, 'Set user for entry'],
+        index: true,
+    },
     date: {
         type: Date,
         required: [true, 'Set date for entry'],
-        unique: true,
-        index: 1,
+        index: true,
     },
     height: {
         type: Number,
@@ -29,7 +33,7 @@ const todaySchema = new Schema({
     },
     dailyRate: {
         type: Number,
-        default: null,
+        required: [true, 'Set dailyRate'],
     },
     consumed: {
         type: Number,
@@ -49,6 +53,8 @@ const todaySchema = new Schema({
         default: null,
     },
 });
+
+todaySchema.index({ user: 1, date: 1 }, { unique: true });
 
 const Today = model("today", todaySchema);
 
