@@ -10,7 +10,6 @@ const getAllProducts = async (_req, res, next) => {
 const getProductById = async (req, res, next) => {
     try {
       const { productId } = req.params;
-      // const result = await Product.findById('5d51694902b2373622ff5cdb');
       const result = await Product.findById(productId);
   
       if(!result) {return res.status(404).json({ message: 'Product ID not found' });}
@@ -21,7 +20,6 @@ const getProductById = async (req, res, next) => {
 const getProductByName = async (req, res, next) => {
   try {
     const { productName } = req.params;
-    // const result = await Product.find({ title: { $regex: /eggplant/i } });;
     const result = await Product.find({ title: { $regex: new RegExp(productName, 'i') } });
 
     if(result.length === 0) {return res.status(404).json({ message: 'Product not found' });}
