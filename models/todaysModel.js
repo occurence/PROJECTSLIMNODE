@@ -7,7 +7,7 @@ const todaySchema = new Schema({
         index: true,
     },
     date: {
-        type: Date,
+        type: String,
         required: [true, 'Set date for entry'],
         index: true,
     },
@@ -47,11 +47,27 @@ const todaySchema = new Schema({
         type: Number,
         default: 0,
     },
-    product: {
-        type: Map,
-        of: Number,
-        default: null,
-    },
+    // products: {
+    //     type: Map,
+    //     of: Number,
+    //     default: null,
+    // },
+    products: {
+        type: [{
+            productId: {
+                type: String,
+                default: null,
+            },
+            productName: {
+                type: String,
+                default: null,
+            },
+            grams: {
+                type: Number,
+                default: null,
+            },
+        }]
+    }
 });
 
 todaySchema.index({ user: 1, date: 1 }, { unique: true });
