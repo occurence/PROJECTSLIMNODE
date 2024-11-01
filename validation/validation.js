@@ -2,7 +2,6 @@ import Joi from "joi";
 
 const signupValidation = Joi.object({
     name: Joi.string()
-        // .pattern(/^[A-Za-z]+$/)
         .required()
         .messages({
             'string.pattern.base': 'Name must only contain alphabet letters',

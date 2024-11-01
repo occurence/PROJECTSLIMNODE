@@ -47,11 +47,6 @@ const todaySchema = new Schema({
         type: Number,
         default: 0,
     },
-    // products: {
-    //     type: Map,
-    //     of: Number,
-    //     default: null,
-    // },
     products: {
         type: [{
             productId: {

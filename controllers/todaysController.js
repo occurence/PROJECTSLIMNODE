@@ -4,7 +4,6 @@ import { intakeValidation } from '../validation/validation.js';
 const getAllTodays = async (req, res, next) => {
     try {
       const { _id } = req.user;
-      // const results = await Today.find();
       const results = await Today.find({ user: { $regex: new RegExp(_id, 'i') } });
       const todayData = results.map(result => ({
         _id: result._id,
@@ -49,19 +48,6 @@ const dailyIntake = async (req, res, next) => {
   try {
     const { _id } = req.user;
     const { user, date, height, age, weight, weightDesired, blood, dailyRate } = req.body;
-    console.log(req.body);
-    let dateObject;
-    let dateString;
-    const formatDate = new Date(date);
-    if (date.includes('T')) {
-      dateObject = new Date(date); // Directly convert the ISO date
-    } else {
-      dateString = `${date}T00:00:00Z`; // Append time for midnight in UTC
-      dateObject = new Date(dateString); // Create a Date object
-    }
-    console.log('Date:', date);
-    console.log('DateString:', dateString)
-    console.log('DateObject:', dateObject);
     const existingDateForUser = await Today.findOne({
       user: { $regex: new RegExp(_id, 'i') },
       date,
@@ -74,8 +60,6 @@ const dailyIntake = async (req, res, next) => {
 
     const result = await Today.create({
       user,
-      // date: dateObject,
-      // date: formatDate,
       date,
       height,
       age,
