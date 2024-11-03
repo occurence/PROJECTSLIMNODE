@@ -103,13 +103,7 @@ const deleteConsumeProduct = async (req, res, next) => {
     const { todayDate, productId } = req.params;
     const result = await Today.findOne({ date: { $regex: new RegExp(todayDate, 'i') } });
     if(!result) {return res.status(404).json({ message: 'Date Not Found' });}
-
-    // const grams = result.products.get(productId);
-    // if(!result.products.has(productId)) {return res.status(404).json({ message: 'Product ID not Found' });}
-    // const resultProduct = await
     console.log(result)
-    // result.products.delete(productId);
-    // await result.save();
     const productIndex = result.products.findIndex(product => product.productId === productId);
     if (productIndex === -1) {
       return res.status(404).json({ message: 'Product ID not Found' });
