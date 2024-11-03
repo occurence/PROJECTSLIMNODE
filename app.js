@@ -26,6 +26,8 @@ app.use(express.json());
 
 
 app.use(express.static("public"));
+// app.use(express.static(path.join(__dirname, 'build')));
+// app.use(express.static('build'));
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 
@@ -37,6 +39,9 @@ app.use('/api/users', usersRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/todays', todaysRouter);
 
+// app.get('*', (_req, res) => {
+//   res.sendFile('build', 'index.html');
+// });
 app.use((_req, res) => {
   res.status(404).json({ message: 'Not found' });
 })
