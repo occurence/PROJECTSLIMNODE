@@ -29,7 +29,7 @@ const signupUser = async (req, res) => {
                 email: newUser.email,
                 password: newUser.password,
             },
-            message: 'Registrations successful'
+            message: 'Registration successful'
         });
     } catch (error) {res.status(500).json({ message: error.message });}
 }
