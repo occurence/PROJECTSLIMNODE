@@ -28,8 +28,10 @@ const getAllTodays = async (req, res, next) => {
 
 const getTodayById = async (req, res, next) => {
     try {
-      const { todayId } = req.params;
-      const result = await Today.findById(todayId);
+      // const { todayId } = req.params;
+      // const result = await Today.findById(todayId);
+      const { todayDate } = req.params;
+      const result = await Today.find({ date: { $regex: new RegExp(todayDate, 'i') } });
       if(!result) {return res.status(404).json({ message: 'Date Not Found' });}
       res.status(200).json(result);
     } catch (error) {res.status(500).json({ message: error.message });}
@@ -74,10 +76,27 @@ const dailyIntake = async (req, res, next) => {
 
 const consumeProduct = async (req, res, next) => {
   try {
-    const { todayId } = req.params;
-    const result = await Today.findById(todayId);
+    // const { todayId } = req.params;
+    // const result = await Today.findById(todayId);
+    // const { todayDate } = req.params;
+    // const { todayDate } = req.body.todayDate;
+    // const { todayDate } = req.body; // Get todayDate from the request body
+    // const { productId, productName, grams } = req.body;
+    // const { todayDate, productId, productName, grams } = req.body;
+    const { todayDate } = req.params;
+    const { productId, productName, grams } = req.body;
+    // console.log(todayDate);
+    // console.log('Request Body:', req.body);
+    // console.log('Request Params:', req.params);
+    const result = await Today.findOne({ date: { $regex: new RegExp(todayDate, 'i') } });
+    // const result = await Today.findOne({ date: { $regex: new RegExp(JSON.stringify(todayDate, null, 2)) } });
     // const result = await Today.findByIdAndUpdate(todayId, req.body, { new: true, runValidators: true });
     if(!result) {return res.status(404).json({ message: 'Date not Found' });}
+    if (!result.products) {
+      result.products = []; // Initialize as an empty array if it doesn't exist
+    }
+    console.log('Request Body:', req.body);
+    console.log('Request Params:', req.params);
 
     // if (!result.products) {result.products = new Map();}
     
@@ -90,6 +109,12 @@ const consumeProduct = async (req, res, next) => {
       productId: req.body.products[0].productId,
       productName: req.body.products[0].productName,
       grams: req.body.products[0].grams,
+      // products: [{
+      //   productId,
+      //   productName,
+      //   grams,        
+      // }]
+
     };
     result.products.push(addProduct);
     await result.save();
