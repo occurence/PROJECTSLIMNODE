@@ -12,7 +12,7 @@ const swaggerOptions = {
         },
         servers: [
             {url: [`http://localhost:${PORT}`],},
-            {url: [`https://nodebackend-bymv.onrender.com/api`],},
+            {url: [`https://projectslimnode.onrender.com/api`],},
         ],
         components: {
             schemas: {
