@@ -100,22 +100,24 @@ const consumeProduct = async (req, res, next) => {
 
 const deleteConsumeProduct = async (req, res, next) => {
   try {
-    const { todayId, productId } = req.params;
-
-    const resultToday = await Today.findById(todayId);
-    if(!resultToday) {return res.status(404).json({ message: 'Date Not Found' });}
+    const { todayDate, productId } = req.params;
+    const result = await Today.findOne({ date: { $regex: new RegExp(todayDate, 'i') } });
+    if(!result) {return res.status(404).json({ message: 'Date Not Found' });}
 
     // const grams = result.products.get(productId);
     // if(!result.products.has(productId)) {return res.status(404).json({ message: 'Product ID not Found' });}
     // const resultProduct = await
-    result.products.delete(productId);
+    console.log(result)
+    // result.products.delete(productId);
+    // await result.save();
+    const productIndex = result.products.findIndex(product => product.productId === productId);
+    if (productIndex === -1) {
+      return res.status(404).json({ message: 'Product ID not Found' });
+    }
+    const removedProduct = result.products[productIndex];
+    result.products.splice(productIndex, 1);
     await result.save();
-    res.status(200).json(result);
-    // res.status(200).json({
-    //   today: {
-    //     [productId]: grams,
-    //   },
-    // });
+    res.status(200).json(removedProduct);
     
   } catch (error) {res.status(500).json({ message: error.message });}
 }
