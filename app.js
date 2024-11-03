@@ -5,7 +5,7 @@ import cors from 'cors';
 import usersRouter from './routes/api/usersRouter.js';
 import productsRouter from './routes/api/productsRouter.js';
 import todaysRouter from './routes/api/todaysRouter.js';
-// import { swaggerSpecs, swaggerUi } from './swaggerConfig.js';
+import { swaggerSpecs, swaggerUi } from './swaggerConfig.js';
 
 const app = express();
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
@@ -26,7 +26,7 @@ app.use(express.json());
 
 
 app.use(express.static("public"));
-// app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 
 
